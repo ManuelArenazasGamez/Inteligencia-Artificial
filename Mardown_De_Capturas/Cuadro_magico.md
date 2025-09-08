@@ -39,7 +39,7 @@ M=n(n2+1)​/2
 - Diagonal secundaria:  6 + 5 + 4 = 15 
 
 ### Conclusión
-Todas las sumas son iguales a 15, por lo que el cuadrado interior de \( 3 \times 3 \).
+Todas las sumas son iguales a 15, por lo que el cuadrado interior de 3 x 3 .
 
 
 
