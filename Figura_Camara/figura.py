@@ -104,7 +104,7 @@ while cap.isOpened():
 
 
     # Mostrar la imagen
-    cv2.imshow("Distancia Manos Rectangulo yeah xd", frame)
+    cv2.imshow("Distancia Manos Rectangulo", frame)
 
     # Salir con 'q'
     if cv2.waitKey(1) & 0xFF == ord('q'):
