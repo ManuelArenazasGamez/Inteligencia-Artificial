@@ -1,0 +1,10 @@
+El conjunto de datos datasetTexto.csv contiene 200 registros de noticias y reacciones en redes sociales, abarcando principalmente los meses de octubre y noviembre de 2025.
+El archivo recopila información sobre dos temas principales que ocurren simultáneamente en México: Protestas de la Generación Z y Estreno de Frankenstein de Guillermo del Toro
+Dentro de ese archivo, la información se atribuye a diferentes fuentes específicas que aparecen en la columna llamada "Medio". Según el análisis del contenido, el dataset recopila información de tres tipos principales de fuentes: Medios de Comunicacion, redes sociales plataformas digitales y fuentes oficiales.
+Se aplicaron 4 filtros principales:
+Keywords: Generación Z" + "Protestas" + "México
+          Frankenstein" + "Guillermo del Toro" + "Netflix
+Filtro Temporal:El sistema se limitó a recolectar información reciente, acotada específicamente al periodo finales de 2025 (los datos van desde agosto hasta el 18 de noviembre de 2025).
+Filtro Geográfico:Aunque hay medios internacionales, el scraper filtró noticias que tuvieran relevancia para México.
+
+Conclusion:El dataset muestra un México polarizado a finales de 2025: por un lado, la Generación Z protesta con furia contra la violencia, y por el otro, el país celebra el éxito cultural de Guillermo del Toro. Es una radiografía digital de cómo conviven la crisis política y el entretenimiento masivo al mismo tiempo.
