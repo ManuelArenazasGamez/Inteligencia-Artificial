@@ -5,7 +5,7 @@ from skimage.transform import resize
 from tensorflow.keras.models import load_model
 
 # 1. CARGA EL MODELO
-modelo_h5 = 'modelo_animales.h5'
+modelo_h5 = 'Modelos/modelo_animalesseis.h5'
 try:
     animal_model = load_model(modelo_h5)
     print("Modelo cargado exitosamente.")
@@ -32,7 +32,7 @@ for archivo in archivos:
             image_original = plt.imread(ruta_completa)
             
             # Redimensionar a 64x64 solo para que la lea el modelo
-            image_para_modelo = resize(image_original, (64, 64), anti_aliasing=True, clip=False, preserve_range=True)
+            image_para_modelo = resize(image_original, (100, 100), anti_aliasing=True, clip=False, preserve_range=True)
             
             # Normalizar y dar formato
             X_test = np.array([image_para_modelo], dtype=np.uint8)
@@ -49,7 +49,7 @@ for archivo in archivos:
             plt.axis('off') 
             
             # CAMBIO AQUÍ: Solo mostramos el nombre del animal
-            plt.title(f"Predicción: {animal.upper()}", fontsize=14, color='blue')
+            plt.title(f"Predicción: {animal.lower()}", fontsize=14, color='black')
             plt.show() 
             
             print(f"Archivo: {archivo} -> {animal}\n")

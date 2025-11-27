@@ -11,7 +11,7 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, LeakyReLU
 from tensorflow.keras.callbacks import EarlyStopping
-
+from tensorflow.keras.layers import RandomFlip, RandomRotation, RandomZoom
 # ==========================================
 # 1. CONFIGURACIÓN
 # ==========================================
@@ -19,8 +19,8 @@ from tensorflow.keras.callbacks import EarlyStopping
 DIRNAME = r'C:\Users\Admin\Documents\Repos\Inteligencia-Artificial\Proyecto2_DatasetV2\Animals'
 
 # Parámetros de imagen
-IMG_WIDTH = 64
-IMG_HEIGHT = 64
+IMG_WIDTH = 100
+IMG_HEIGHT = 100
 IMG_CHANNELS = 3
 
 
@@ -38,7 +38,6 @@ class_indices = {}
 print(f"Iniciando lectura de imágenes en: {DIRNAME}")
 
 # Obtenemos las clases basadas en las carpetas (ant, cats, dogs, etc.)
-# Ordenamos para asegurar consistencia (0=ant, 1=cats...)
 carpetas = sorted([d for d in os.listdir(DIRNAME) if os.path.isdir(os.path.join(DIRNAME, d))])
 print(f"Clases detectadas: {carpetas}")
 
@@ -95,8 +94,16 @@ print('Datos de prueba:', test_X.shape)
 # ==========================================
 nClasses = len(class_names)
 
+# Definimos las transformaciones aleatorias
+data_augmentation = Sequential([
+    RandomFlip("horizontal"),   
+    RandomRotation(0.1),        
+    RandomZoom(0.1),           
+])
+
 animal_model = Sequential()
 
+animal_model.add(data_augmentation)
 # Capa 1
 animal_model.add(Conv2D(32, kernel_size=(3, 3), activation='linear', padding='same', input_shape=(IMG_WIDTH, IMG_HEIGHT, IMG_CHANNELS)))
 animal_model.add(LeakyReLU(alpha=0.1))
@@ -163,6 +170,6 @@ print("\nReporte de Clasificación:")
 print(classification_report(true_ids, predicted_ids, target_names=class_names))
 
 # Guardar el modelo
-save_path = 'modelo_animales.h5'
+save_path = 'modelo_animalesseis.h5'
 animal_model.save(save_path)
 print(f"\n>>> ¡Entrenamiento finalizado! Modelo guardado como '{save_path}'")
