@@ -219,7 +219,7 @@ def obtener_click_pos(pos, filas, ancho):
     return None # Retornar None si el clic está fuera de los límites
 
 def main(ventana, ancho):
-    FILAS = 10 
+    FILAS = 11
     grid = crear_grid(FILAS, ancho)
 
     inicio = None

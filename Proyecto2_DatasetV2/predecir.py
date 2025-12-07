@@ -13,7 +13,7 @@ except:
     print(f"Error: No se encontró '{modelo_h5}'.")
     exit()
 
-carpeta_pruebas = r'C:\Users\Admin\Documents\Repos\Inteligencia-Artificial\Proyecto2_DatasetV2\Pruebas'
+carpeta_pruebas = r'C:\Users\manue\OneDrive\Documentos\9° Semestre\Inteligencia-Artificial\Proyecto2_DatasetV2\Pruebas'
 
 # Etiquetas
 animales = ['ant', 'cats', 'dogs', 'ladybug', 'turtles']
