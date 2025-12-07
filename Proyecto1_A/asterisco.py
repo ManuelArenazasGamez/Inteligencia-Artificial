@@ -5,7 +5,7 @@ from queue import PriorityQueue
 
 ANCHO_VENTANA = 800
 VENTANA = pygame.display.set_mode((ANCHO_VENTANA, ANCHO_VENTANA))
-pygame.display.set_caption("Visualización de Algoritmo A*")
+pygame.display.set_caption(" Algoritmo A*")
 
 # Colores (RGB)
 BLANCO = (255, 255, 255)
@@ -73,20 +73,35 @@ class Nodo:
         pygame.draw.rect(ventana, self.color, (self.x, self.y, self.ancho, self.ancho))
 
     def actualizar_vecinos(self, grid):
-        """ Llena la lista self.vecinos con nodos transitables """
         self.vecinos = []
+        
+        # --- MOVIMIENTOS RECTOS (Arriba, Abajo, Izq, Der) ---
         # ABAJO
-        if self.col < self.total_filas - 1 and not grid[self.fila][self.col + 1].es_pared():
-            self.vecinos.append(grid[self.fila][self.col + 1])
-        # ARRIBA
-        if self.col > 0 and not grid[self.fila][self.col - 1].es_pared():
-            self.vecinos.append(grid[self.fila][self.col - 1])
-        # DERECHA
         if self.fila < self.total_filas - 1 and not grid[self.fila + 1][self.col].es_pared():
             self.vecinos.append(grid[self.fila + 1][self.col])
-        # IZQUIERDA
+        # ARRIBA
         if self.fila > 0 and not grid[self.fila - 1][self.col].es_pared():
             self.vecinos.append(grid[self.fila - 1][self.col])
+        # DERECHA
+        if self.col < self.total_filas - 1 and not grid[self.fila][self.col + 1].es_pared():
+            self.vecinos.append(grid[self.fila][self.col + 1])
+        # IZQUIERDA
+        if self.col > 0 and not grid[self.fila][self.col - 1].es_pared():
+            self.vecinos.append(grid[self.fila][self.col - 1])
+
+        # --- MOVIMIENTOS DIAGONALES (Nuevos) ---
+        # Abajo-Derecha
+        if self.fila < self.total_filas - 1 and self.col < self.total_filas - 1 and not grid[self.fila + 1][self.col + 1].es_pared():
+            self.vecinos.append(grid[self.fila + 1][self.col + 1])
+        # Abajo-Izquierda
+        if self.fila < self.total_filas - 1 and self.col > 0 and not grid[self.fila + 1][self.col - 1].es_pared():
+            self.vecinos.append(grid[self.fila + 1][self.col - 1])
+        # Arriba-Derecha
+        if self.fila > 0 and self.col < self.total_filas - 1 and not grid[self.fila - 1][self.col + 1].es_pared():
+            self.vecinos.append(grid[self.fila - 1][self.col + 1])
+        # Arriba-Izquierda
+        if self.fila > 0 and self.col > 0 and not grid[self.fila - 1][self.col - 1].es_pared():
+            self.vecinos.append(grid[self.fila - 1][self.col - 1])
 
     def __lt__(self, other):
         """ Permite comparar dos nodos (necesario para PriorityQueue) """
@@ -95,13 +110,9 @@ class Nodo:
 # --- Funciones del Algoritmo A* ---
 
 def h(p1, p2):
-    """
-    Calcula la heurística (distancia Manhattan) entre dos puntos.
-    p1 y p2 son tuplas (fila, col)
-    """
     x1, y1 = p1
     x2, y2 = p2
-    return abs(x1 - x2) + abs(y1 - y2)
+    return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
 
 def reconstruir_camino(came_from, actual, dibujar):
     """ Dibuja el camino final retrocediendo desde el nodo final """
@@ -150,12 +161,20 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
             return True
 
         # --- Procesar vecinos ---
+        # --- Procesar vecinos ---
         for vecino in actual.vecinos:
-            # Asumimos que el costo para moverse a un vecino es 1
-            temp_g_score = g_score[actual] + 1 
+            
+            # CALCULO DE COSTO INTELIGENTE:
+            # Si cambiamos de fila Y de columna a la vez, es un movimiento diagonal.
+            if actual.fila != vecino.fila and actual.col != vecino.col:
+                costo = 1.414  # Raíz cuadrada de 2
+            else:
+                costo = 1      # Movimiento recto
+            
+            # Usamos ese costo variable aquí:
+            temp_g_score = g_score[actual] + costo
 
             if temp_g_score < g_score[vecino]:
-                # Se encontró un camino mejor hacia este vecino
                 came_from[vecino] = actual
                 g_score[vecino] = temp_g_score
                 f_score[vecino] = temp_g_score + h(vecino.get_pos(), fin.get_pos())
@@ -164,7 +183,7 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
                     count += 1
                     open_set.put((f_score[vecino], count, vecino))
                     open_set_hash.add(vecino)
-                    vecino.hacer_abierto() # Pintar de verde (abierto)
+                    vecino.hacer_abierto()
 
         dibujar() # Actualizar la pantalla en cada paso
 
@@ -219,7 +238,7 @@ def obtener_click_pos(pos, filas, ancho):
     return None # Retornar None si el clic está fuera de los límites
 
 def main(ventana, ancho):
-    FILAS = 11
+    FILAS = 11 
     grid = crear_grid(FILAS, ancho)
 
     inicio = None
