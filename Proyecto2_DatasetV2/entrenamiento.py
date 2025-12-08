@@ -61,7 +61,7 @@ for idx, folder in enumerate(carpetas):
                 image = cv2.resize(image, (IMG_WIDTH, IMG_HEIGHT))
                 
                 images.append(image)
-                labels.append(idx) # Guardamos el índice de la clase (0, 1, 2...)
+                labels.append(idx) 
                 count += 1
     
     print(f" - Carpeta '{folder}': {count} imágenes cargadas.")

@@ -11,11 +11,11 @@ pygame.display.set_caption(" Algoritmo A*")
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 GRIS = (128, 128, 128)
-VERDE = (0, 255, 0)      # Nodos "abiertos" (en el open_set)
-ROJO = (255, 0, 0)        # Nodos "cerrados" (ya visitados)
-NARANJA = (255, 165, 0)   # Nodo de inicio
-PURPURA = (128, 0, 128)   # Nodo final
-TURQUESA = (64, 224, 208) # Nodos del camino final
+VERDE = (0, 255, 0)      
+ROJO = (255, 0, 0)        
+NARANJA = (255, 165, 0)   
+PURPURA = (128, 0, 128)   
+TURQUESA = (64, 224, 208) 
 
 class Nodo:
     def __init__(self, fila, col, ancho, total_filas):
@@ -103,12 +103,13 @@ class Nodo:
         """ Permite comparar dos nodos (necesario para PriorityQueue) """
         return False
 
-# --- Funciones del Algoritmo A* ---
+
 
 def h(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
-    return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+    distancia = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+    return distancia * 1.5
 
 def reconstruir_camino(came_from, actual, dibujar):
     """ Dibuja el camino final retrocediendo desde el nodo final """
@@ -151,8 +152,8 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
 
         if actual == fin:
             reconstruir_camino(came_from, fin, dibujar)
-            fin.hacer_fin() # Asegurarse de que el fin siga púrpura
-            inicio.hacer_inicio() # Y el inicio naranja
+            fin.hacer_fin() 
+            inicio.hacer_inicio() 
             return True
 
        
@@ -180,7 +181,6 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
 
         dibujar() 
 
-        # Marcar el nodo actual como visitado (cerrado)
         if actual != inicio:
             actual.hacer_cerrado() # Pintar de rojo (cerrado)
 
@@ -253,13 +253,13 @@ def main(ventana, ancho):
                     inicio = None
                     fin = None
                     algoritmo_iniciado = False
-                continue # Ignorar otros eventos post-algoritmo
+                continue 
 
             # --- Manejo de Clicks ---
             if pygame.mouse.get_pressed()[0]:  # Click izquierdo
                 pos = pygame.mouse.get_pos()
                 click_pos = obtener_click_pos(pos, FILAS, ancho)
-                if not click_pos: continue # Ignorar clics fuera del grid
+                if not click_pos: continue 
                 
                 fila, col = click_pos
                 nodo = grid[fila][col]
@@ -288,15 +288,12 @@ def main(ventana, ancho):
 
             # --- Manejo de Teclado ---
             if event.type == pygame.KEYDOWN:
-                # Iniciar el algoritmo con ESPACIO
                 if event.key == pygame.K_SPACE and inicio and fin:
                     algoritmo_iniciado = True
-                    # Actualizar los vecinos de todos los nodos ANTES de correr
                     for fila_grid in grid:
                         for nodo in fila_grid:
                             nodo.actualizar_vecinos(grid)
                     
-                    # Llamar al algoritmo
                     algoritmo_a_estrella(
                         lambda: dibujar(ventana, grid, FILAS, ancho), # Función de dibujo
                         grid, 
@@ -304,7 +301,6 @@ def main(ventana, ancho):
                         fin
                     )
 
-                # Resetear el grid con 'C'
                 if event.key == pygame.K_c:
                     grid = crear_grid(FILAS, ancho)
                     inicio = None
