@@ -31,7 +31,6 @@ for archivo in archivos:
             # Leer imagen original para mostrarla bonita
             image_original = plt.imread(ruta_completa)
             
-            # Redimensionar a 64x64 solo para que la lea el modelo
             image_para_modelo = resize(image_original, (100, 100), anti_aliasing=True, clip=False, preserve_range=True)
             
             # Normalizar y dar formato
@@ -43,12 +42,10 @@ for archivo in archivos:
             idx = np.argmax(prediccion)
             animal = animales[idx]
             
-            # --- AQUÍ ESTÁ LA MAGIA VISUAL ---
             plt.figure(figsize=(5, 5)) 
             plt.imshow(image_original) 
             plt.axis('off') 
             
-            # CAMBIO AQUÍ: Solo mostramos el nombre del animal
             plt.title(f"Predicción: {animal.lower()}", fontsize=14, color='black')
             plt.show() 
             
