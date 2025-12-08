@@ -112,24 +112,18 @@ def h(p1, p2):
     return distancia * 1.5
 
 def reconstruir_camino(came_from, actual, dibujar):
-    """ Dibuja el camino final retrocediendo desde el nodo final """
     while actual in came_from:
         actual = came_from[actual]
         actual.hacer_camino()
         dibujar()
 
 def algoritmo_a_estrella(dibujar, grid, inicio, fin):
-    """
-    La lógica principal del algoritmo A*.
-    'dibujar' es una función lambda para actualizar la pantalla.
-    """
     count = 0
     open_set = PriorityQueue()
     open_set.put((0, count, inicio)) # (f_score, count, nodo)
     
     came_from = {} # Diccionario para reconstruir el camino
     
-    # g_score: Costo real desde el inicio hasta este nodo
     g_score = {nodo: float("inf") for fila in grid for nodo in fila}
     g_score[inicio] = 0
     
@@ -137,11 +131,9 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
     f_score = {nodo: float("inf") for fila in grid for nodo in fila}
     f_score[inicio] = h(inicio.get_pos(), fin.get_pos())
 
-    # Para saber qué hay en el open_set (PriorityQueue no lo permite fácilmente)
     open_set_hash = {inicio} 
 
     while not open_set.empty():
-        # Permitir al usuario cerrar la ventana mientras corre el algoritmo
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
