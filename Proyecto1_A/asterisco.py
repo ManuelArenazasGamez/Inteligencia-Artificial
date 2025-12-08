@@ -31,7 +31,6 @@ class Nodo:
     def get_pos(self):
         return self.fila, self.col
 
-    # --- Funciones de estado (boolean) ---
     def es_cerrado(self):
         return self.color == ROJO
 
@@ -47,7 +46,6 @@ class Nodo:
     def es_fin(self):
         return self.color == PURPURA
 
-    # --- Funciones de acción (cambiar color) ---
     def restablecer(self):
         self.color = BLANCO
 
@@ -75,7 +73,6 @@ class Nodo:
     def actualizar_vecinos(self, grid):
         self.vecinos = []
         
-        # --- MOVIMIENTOS RECTOS (Arriba, Abajo, Izq, Der) ---
         # ABAJO
         if self.fila < self.total_filas - 1 and not grid[self.fila + 1][self.col].es_pared():
             self.vecinos.append(grid[self.fila + 1][self.col])
@@ -89,7 +86,6 @@ class Nodo:
         if self.col > 0 and not grid[self.fila][self.col - 1].es_pared():
             self.vecinos.append(grid[self.fila][self.col - 1])
 
-        # --- MOVIMIENTOS DIAGONALES (Nuevos) ---
         # Abajo-Derecha
         if self.fila < self.total_filas - 1 and self.col < self.total_filas - 1 and not grid[self.fila + 1][self.col + 1].es_pared():
             self.vecinos.append(grid[self.fila + 1][self.col + 1])
@@ -153,19 +149,16 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
         actual = open_set.get()[2] 
         open_set_hash.remove(actual)
 
-        # --- ¡Objetivo encontrado! ---
         if actual == fin:
             reconstruir_camino(came_from, fin, dibujar)
             fin.hacer_fin() # Asegurarse de que el fin siga púrpura
             inicio.hacer_inicio() # Y el inicio naranja
             return True
 
-        # --- Procesar vecinos ---
-        # --- Procesar vecinos ---
+       
         for vecino in actual.vecinos:
             
             # CALCULO DE COSTO INTELIGENTE:
-            # Si cambiamos de fila Y de columna a la vez, es un movimiento diagonal.
             if actual.fila != vecino.fila and actual.col != vecino.col:
                 costo = 1.414  # Raíz cuadrada de 2
             else:
@@ -185,7 +178,7 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
                     open_set_hash.add(vecino)
                     vecino.hacer_abierto()
 
-        dibujar() # Actualizar la pantalla en cada paso
+        dibujar() 
 
         # Marcar el nodo actual como visitado (cerrado)
         if actual != inicio:
@@ -193,7 +186,7 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
 
     return False # No se encontró un camino
 
-# --- Funciones de Dibujo (sin cambios) ---
+# --- Funciones de Dibujo 
 
 def crear_grid(filas, ancho):
     grid = []
@@ -222,20 +215,18 @@ def dibujar(ventana, grid, filas, ancho):
 
 def obtener_click_pos(pos, filas, ancho):
     ancho_nodo = ancho // filas
-    y, x = pos # OJO: En pygame pos es (x, y)
+    y, x = pos 
     
-    # Tu código original tenía (y, x = pos) que significa y=pos[0], x=pos[1]
-    # Lo corrijo a la forma estándar de pygame:
+   
     x_pixel, y_pixel = pos
     
-    # Tu lógica de grid usa (fila, col) como (x, y)
+    
     fila = x_pixel // ancho_nodo
     col = y_pixel // ancho_nodo
     
-    # Hago una comprobación para evitar IndexError si se hace clic fuera
     if 0 <= fila < filas and 0 <= col < filas:
         return fila, col
-    return None # Retornar None si el clic está fuera de los límites
+    return None 
 
 def main(ventana, ancho):
     FILAS = 11 
