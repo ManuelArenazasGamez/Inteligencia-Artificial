@@ -134,7 +134,7 @@ animal_model.compile(loss=keras.losses.categorical_crossentropy,
 # ==========================================
 # 5. ENTRENAMIENTO (CON EARLY STOPPING)
 # ==========================================
-early_stop = EarlyStopping(monitor='val_loss', patience=80, restore_best_weights=True, verbose=1)
+early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True, verbose=1)
 
 print("\n>>> Iniciando entrenamiento...")
 history = animal_model.fit(

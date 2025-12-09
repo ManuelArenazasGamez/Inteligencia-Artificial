@@ -3,7 +3,7 @@ import math
 from queue import PriorityQueue
 
 
-ANCHO_VENTANA = 800
+ANCHO_VENTANA = 600
 VENTANA = pygame.display.set_mode((ANCHO_VENTANA, ANCHO_VENTANA))
 pygame.display.set_caption(" Algoritmo A*")
 
@@ -11,11 +11,11 @@ pygame.display.set_caption(" Algoritmo A*")
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 GRIS = (128, 128, 128)
-VERDE = (0, 255, 0)      
-ROJO = (255, 0, 0)        
+VERDE = (0, 60, 0)      
+ROJO = (60, 0, 0)        
 NARANJA = (255, 165, 0)   
-PURPURA = (128, 0, 128)   
-TURQUESA = (64, 224, 208) 
+PURPURA = (255, 0, 255)   
+TURQUESA = (0, 255, 255) 
 
 class Nodo:
     def __init__(self, fila, col, ancho, total_filas):
@@ -108,8 +108,7 @@ class Nodo:
 def h(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
-    distancia = math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
-    return distancia * 1.5
+    return (abs(x1 - x2) + abs(y1 - y2)) * 10
 
 def reconstruir_camino(came_from, actual, dibujar):
     while actual in came_from:
@@ -153,9 +152,9 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
             
             # CALCULO DE COSTO INTELIGENTE:
             if actual.fila != vecino.fila and actual.col != vecino.col:
-                costo = 1.414  # Raíz cuadrada de 2
+                costo = 10
             else:
-                costo = 1      # Movimiento recto
+                costo = 14      # Movimiento recto
             
             # Usamos ese costo variable aquí:
             temp_g_score = g_score[actual] + costo
@@ -239,8 +238,8 @@ def main(ventana, ancho):
 
             # No permitir clicks si el algoritmo ya corrió
             if algoritmo_iniciado:
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_c:
-                    # Resetear todo con 'c'
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                    # Resetear todo con 'r'
                     grid = crear_grid(FILAS, ancho)
                     inicio = None
                     fin = None
