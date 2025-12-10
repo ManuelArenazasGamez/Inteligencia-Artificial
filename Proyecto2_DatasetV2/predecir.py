@@ -5,7 +5,7 @@ from skimage.transform import resize
 from tensorflow.keras.models import load_model
 
 # 1. CARGA EL MODELO
-modelo_h5 = 'Modelos/modelo_animalesseis.h5'
+modelo_h5 = 'Modelos/modelo_animalesocho.keras'
 try:
     animal_model = load_model(modelo_h5)
     print("Modelo cargado exitosamente.")

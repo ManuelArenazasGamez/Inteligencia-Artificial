@@ -12,13 +12,13 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D, LeakyReLU
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers import RandomFlip, RandomRotation, RandomZoom
+from tensorflow.keras.layers import RandomContrast
 # ==========================================
 # 1. CONFIGURACIÓN
 # ==========================================
 
 DIRNAME = r'C:\Users\Admin\Documents\Repos\Inteligencia-Artificial\Proyecto2_DatasetV2\Animals'
 
-# Parámetros de imagen
 IMG_WIDTH = 100
 IMG_HEIGHT = 100
 IMG_CHANNELS = 3
@@ -80,7 +80,7 @@ del images
 # Normalización (0 a 1) y conversión a float
 X = X.astype('float32') / 255.0
 
-# One-hot encoding (Ej: clase 1 se vuelve [0, 1, 0, 0, 0])
+# One-hot encoding 
 y_one_hot = to_categorical(y)
 
 # Separar en Entrenamiento (80%) y Prueba (20%)
@@ -98,7 +98,8 @@ nClasses = len(class_names)
 data_augmentation = Sequential([
     RandomFlip("horizontal"),   
     RandomRotation(0.1),        
-    RandomZoom(0.1),           
+    RandomZoom(0.1),
+    RandomContrast(0.2),             
 ])
 
 animal_model = Sequential()
@@ -170,6 +171,6 @@ print("\nReporte de Clasificación:")
 print(classification_report(true_ids, predicted_ids, target_names=class_names))
 
 # Guardar el modelo
-save_path = 'modelo_animalesseis.h5'
+save_path = 'modelo_animalesocho.keras'
 animal_model.save(save_path)
 print(f"\n>>> ¡Entrenamiento finalizado! Modelo guardado como '{save_path}'")
