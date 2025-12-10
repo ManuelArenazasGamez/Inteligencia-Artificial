@@ -10,13 +10,12 @@ from transformers import (
 )
 from peft import LoraConfig, get_peft_model, TaskType, prepare_model_for_kbit_training
 
-# --- BLOQUE PRINCIPAL PARA WINDOWS ---
 if __name__ == "__main__":
     
     # 1. Configuración
     archivo_dataset = "tutor_programacion.jsonl" 
     output_dir = "./tutor_ajustado_phi3"
-    model_name = "microsoft/Phi-3-mini-4k-instruct" # Modelo base
+    model_name = "microsoft/Phi-3-mini-4k-instruct" 
 
     print(f"--- Cargando dataset desde {archivo_dataset} ---")
     dataset = load_dataset("json", data_files=archivo_dataset)
@@ -30,13 +29,13 @@ if __name__ == "__main__":
     print("--- Cargando Modelo en 8-bits ---")
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        load_in_8bit=True,  # Esto requiere bitsandbytes
+        load_in_8bit=True,  
         device_map="auto",
         trust_remote_code=True
     )
 
     # PASO CRÍTICO: Preparar modelo para entrenamiento k-bit
-    # Esto congela las capas que no se entrenan y estabiliza la memoria
+ 
     model = prepare_model_for_kbit_training(model)
 
     # 4. Configurar LoRA
@@ -55,7 +54,7 @@ if __name__ == "__main__":
 
     # 5. Preprocesar datos
     def format_instruction(example):
-        # Usamos .get() para evitar errores si falta algún campo
+       
         pregunta = example.get('prompt', example.get('instruction', ''))
         respuesta = example.get('response', '')
         
@@ -73,8 +72,8 @@ if __name__ == "__main__":
         per_device_train_batch_size=1, # Mantenlo en 1 para Windows
         gradient_accumulation_steps=4,
         logging_steps=1,
-        num_train_epochs=3, # Tus 3 épocas requeridas
-        learning_rate=2e-4, # Tu learning rate requerido
+        num_train_epochs=3, #  3 épocas requeridas
+        learning_rate=2e-4, # learning rate requerido
         fp16=True, 
         save_strategy="epoch",
         optim="adamw_8bit", # Optimizador compatible con bitsandbytes
@@ -89,7 +88,6 @@ if __name__ == "__main__":
     )
 
     print("--- INICIANDO FINE-TUNING REAL ---")
-    # Si ves una barra de carga después de esto, ¡LO LOGRASTE!
     trainer.train()
 
     # 7. Guardar
