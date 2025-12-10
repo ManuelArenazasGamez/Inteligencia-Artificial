@@ -12,7 +12,7 @@ dataset = load_dataset("json", data_files="tutor_programacion.jsonl")
 # -----------------------------
 # 2. Cargar modelo base
 # -----------------------------
-model_name = "meta-llama/Llama-3.2-3B-Instruct"
+model_name = "microsoft/Phi-3-mini-4k-instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
 
