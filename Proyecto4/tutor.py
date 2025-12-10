@@ -6,8 +6,8 @@ from peft import PeftModel
 import threading
 
 # --- CONFIGURACIÓN ---
-NOMBRE_MODELO_BASE = "meta-llama/Llama-3.2-3B-Instruct" 
-CARPETA_ADAPTADORES = "./lora-tutor"
+NOMBRE_MODELO_BASE = "microsoft/Phi-3-mini-4k-instruct" 
+CARPETA_ADAPTADORES = "./tutor_ajustado_phi3"
 
 class TutorApp:
     def __init__(self, root):
@@ -42,14 +42,19 @@ class TutorApp:
 
     def cargar_modelo(self):
         try:
-            self.tokenizer = AutoTokenizer.from_pretrained(NOMBRE_MODELO_BASE)
+            # CORRECCIÓN 1: Agregar trust_remote_code=True al Tokenizer
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                NOMBRE_MODELO_BASE, 
+                trust_remote_code=True 
+            )
             
-            # Carga base
+            # CORRECCIÓN 2: Agregar trust_remote_code=True al Modelo Base
             base_model = AutoModelForCausalLM.from_pretrained(
                 NOMBRE_MODELO_BASE,
                 load_in_8bit=True, 
                 device_map="auto",
-                torch_dtype=torch.float16
+                torch_dtype=torch.float16,
+                trust_remote_code=True # <--- ESTO ES LO QUE FALTABA
             )
             
             # Carga tus cambios (Fine-Tuning)
@@ -59,7 +64,8 @@ class TutorApp:
             self.mostrar_en_chat("SISTEMA", "¡Modelo cargado exitosamente! Puedes empezar.\n")
         except Exception as e:
             self.mostrar_en_chat("ERROR", f"No se pudo cargar el modelo: {str(e)}")
-
+            
+            
     def enviar_mensaje(self, event=None):
         pregunta = self.entry_msg.get()
         if not pregunta.strip():
