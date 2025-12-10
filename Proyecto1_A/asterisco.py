@@ -11,8 +11,8 @@ pygame.display.set_caption(" Algoritmo A*")
 BLANCO = (255, 255, 255)
 NEGRO = (0, 0, 0)
 GRIS = (128, 128, 128)
-VERDE = (0, 60, 0)      
-ROJO = (60, 0, 0)        
+VERDE = (0, 128, 0)      
+ROJO = (255, 0, 0)        
 NARANJA = (255, 165, 0)   
 PURPURA = (255, 0, 255)   
 TURQUESA = (0, 255, 255) 
@@ -152,9 +152,9 @@ def algoritmo_a_estrella(dibujar, grid, inicio, fin):
             
             # CALCULO DE COSTO INTELIGENTE:
             if actual.fila != vecino.fila and actual.col != vecino.col:
-                costo = 10
+                costo = 14
             else:
-                costo = 14      # Movimiento recto
+                costo = 10      # Movimiento recto
             
             # Usamos ese costo variable aquí:
             temp_g_score = g_score[actual] + costo

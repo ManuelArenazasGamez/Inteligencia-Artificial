@@ -30,21 +30,30 @@ print(" ¡TUTOR INTELIGENTE ACTIVO! (Escribe 'salir' para terminar)")
 print("="*50 + "\n")
 
 def generar_respuesta(pregunta):
-    # Formato ChatML
-    prompt = f"<|user|>\n{pregunta}<|end|>\n<|assistant|>\n"
+    instrucciones = "Eres un Tutor de Algoritmos experto. Explica el algoritmo paso a paso y usa una analogía simple."
+    
+    prompt = f"<|user|>\n{instrucciones}\n\nPregunta: {pregunta}<|end|>\n<|assistant|>\n"
+    
     inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+    
+    input_length = inputs.input_ids.shape[1] 
     
     with torch.no_grad():
         outputs = model.generate(
             **inputs, 
-            max_new_tokens=256, # Longitud de respuesta
-            temperature=0.3,    # Creatividad baja para ser preciso
-            do_sample=True
+            max_new_tokens=512,
+            temperature=0.2,     
+            do_sample=True,
+            use_cache=False,
+            repetition_penalty=1.2,
+            pad_token_id=tokenizer.eos_token_id
         )
     
-    respuesta_completa = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    # Limpiamos para obtener solo la respuesta del asistente
-    return respuesta_completa.split("<|assistant|>\n")[-1]
+
+    generated_tokens = outputs[0][input_length:]
+    
+    respuesta_limpia = tokenizer.decode(generated_tokens, skip_special_tokens=True)
+    return respuesta_limpia.strip()
 
 # Bucle de chat
 while True:
