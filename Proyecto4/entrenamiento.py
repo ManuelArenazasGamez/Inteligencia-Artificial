@@ -72,8 +72,8 @@ if __name__ == "__main__":
         per_device_train_batch_size=1, # Mantenlo en 1 para Windows
         gradient_accumulation_steps=4,
         logging_steps=1,
-        num_train_epochs=3, #  3 épocas requeridas
-        learning_rate=2e-4, # learning rate requerido
+        num_train_epochs=15, #   épocas requeridas
+        learning_rate=2e-3, # learning rate requerido
         fp16=True, 
         save_strategy="epoch",
         optim="adamw_8bit", # Optimizador compatible con bitsandbytes

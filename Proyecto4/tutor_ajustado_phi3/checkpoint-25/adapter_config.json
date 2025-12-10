@@ -19,10 +19,10 @@
   "rank_pattern": {},
   "revision": null,
   "target_modules": [
-    "down_proj",
     "o_proj",
-    "qkv_proj",
-    "gate_up_proj"
+    "gate_up_proj",
+    "down_proj",
+    "qkv_proj"
   ],
   "task_type": "CAUSAL_LM",
   "use_rslora": false
